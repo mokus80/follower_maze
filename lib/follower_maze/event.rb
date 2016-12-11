@@ -11,6 +11,11 @@ module FollowerMaze
       @to_user = array[3]
     end
 
+    def self.parsed_event(_payload)
+      array = _payload.chomp.split('|')
+      { sequence: array[0], type: array[1], from_user: array[2], to_user: array[3] }
+    end
+
     def to_hash
       { sequence: self.sequence, type: self.type, from_user: self.from_user, to_user: self.to_user }
     end
