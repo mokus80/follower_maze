@@ -3,9 +3,8 @@ require 'thread'
 require 'pry'
 require './lib/follower_maze/event_queue'
 require './lib/follower_maze/user'
+require './lib/follower_maze/event'
 
-
-event = FollowerMaze::Event.new("3|S|3\n") #just testing if class responds
 event_queue = FollowerMaze::EventQueue.new([])
 
 event_server = TCPServer.open(9090)
@@ -16,9 +15,9 @@ client_server = TCPServer.open(9099)
 puts "event source connected"
   events = Thread.start(event_socket) do |event|
     while payload = event.gets do
-      puts payload
-      event = FollowerMaze::Event.new(payload)
-      queue = event_queue.add_and_sort(event.to_hash)
+      # TO DO: use event
+      #event = FollowerMaze::Event.new(payload)
+      queue = event_queue.add_and_sort(payload)
       puts "|#{queue}|"
   end
 end

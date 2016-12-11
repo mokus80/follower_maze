@@ -1,7 +1,7 @@
 module FollowerMaze
   class Event
 
-    #attr_reader :payload, :sequence, :type, :from_user, :to_user
+    attr_reader :payload, :sequence, :type, :from_user, :to_user
 
     def initialize(_payload)
       array = _payload.chomp.split('|')
@@ -9,6 +9,10 @@ module FollowerMaze
       @type = array[1]
       @from_user = array[2]
       @to_user = array[3]
+    end
+
+    def to_hash
+      { sequence: self.sequence, type: self.type, from_user: self.from_user, to_user: self.to_user }
     end
 
   	# def process(_user, _event)
