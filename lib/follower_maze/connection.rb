@@ -1,10 +1,9 @@
 module FollowerMaze
-  class Server
+  class Connection
 
     def initialize(_event_server, _client_server)
       @event_server = _event_server
       @client_server = _client_server
-      @users = {}
       @event_queue = FollowerMaze::EventQueue.new()
     end
 
