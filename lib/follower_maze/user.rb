@@ -1,7 +1,7 @@
 module FollowerMaze
   class User
 
-  	attr_reader :id, :followers
+    attr_reader :id, :followers
 
     def initialize(_id)
       @id = _id

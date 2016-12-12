@@ -3,7 +3,7 @@ module FollowerMaze
     
     attr_reader :events
 
-  	def initialize(_events)
+  	def initialize
   		@events = []
   	end
 
