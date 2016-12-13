@@ -5,6 +5,7 @@ module FollowerMaze
       @event_server = _event_server
       @client_server = _client_server
       @event_queue = FollowerMaze::EventQueue.new()
+      @clients = []
     end
 
     def run
@@ -14,8 +15,9 @@ module FollowerMaze
         while payload = event.gets do
           # TO DO: use event
           #event = FollowerMaze::Event.new(payload)
-          queue = @event_queue.add_and_sort(payload)
-          puts "|#{queue}|"
+          @queue = @event_queue.add_and_sort(payload)
+          puts "|#{@queue}|"
+          puts " ************** #{@clients}"
         end
       end
 
@@ -24,8 +26,11 @@ module FollowerMaze
         clients = Thread.start(client_socket) do |client|
           id = client.gets
           puts "#{id} registered"
-          user = FollowerMaze::User.new(id)
-          puts "#{user.id} created"
+          @clients << { "#{id.chomp}" => client }
+          puts @clients
+          puts "<<<<<<<<<<<<<<< #{@queue}"
+          #user = FollowerMaze::User.new(id)
+          #puts "#{user.id} created"
         end
       end
     end
