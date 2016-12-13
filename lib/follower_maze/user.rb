@@ -8,11 +8,11 @@ module FollowerMaze
       @followers = []
     end
 
-    def add_follower(_user_id)
+    def add_follower(_client_id)
   	  @followers << _user_id
     end
 
-    def remove_follower(_user_id)
+    def remove_follower(_clients_id)
   	  @followers.delete(_user_id)
     end
   end
