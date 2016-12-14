@@ -15,18 +15,25 @@ module FollowerMaze
         while payload = event.gets do
           # TO DO: use event
           @queue = @event_queue.add_and_sort(payload)
-          #puts "|#{@queue}|"
+          puts "|#{@queue}|"
           #puts " ************** #{@clients}"
           @queue.each do |event_hash|
+            puts event_hash
             #binding.pry
-            #if !event_hash[:to_user].nil?
+            
+            #ONLY ADDED THIS FOR DEBUGGING PURPOSES
+            if event_hash[:to_user].nil? && event_hash[:type] == "S"
+              next
               #binding.pry
+            else
               event = FollowerMaze::Event.new(event_hash, payload, @clients)
             #else
               #binding.pry
-              #next
+            
             #end
             event.process
+            
+            end
           end
         end
       end

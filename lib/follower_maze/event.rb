@@ -36,10 +36,10 @@ module FollowerMaze
       when 'F'
         @user = User.new(@to_user) if !@to_user.nil?
         if @user
-          binding.pry
+          #binding.pry
           @user.add_follower(@from_user)
           puts "User #{@from_user} follows user #{@user.id}"
-          binding.pry
+          #binding.pry
           @clients[@user.id.to_s].write(@payload)
         else
           puts "no user"
