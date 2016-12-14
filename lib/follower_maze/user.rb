@@ -9,11 +9,11 @@ module FollowerMaze
     end
 
     def add_follower(_client_id)
-  	  @followers << _user_id
+  	  @followers << _client_id
     end
 
     def remove_follower(_clients_id)
-  	  @followers.delete(_user_id)
+  	  @followers.delete(_client_id)
     end
   end
 end

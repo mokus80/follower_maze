@@ -3,16 +3,17 @@ module FollowerMaze
 
     attr_reader :payload, :sequence, :type, :from_user, :to_user
 
-    def initialize(_payload, _clients)
+    def initialize(_event_hash, _payload, _clients)
       array = _payload.chomp.split('|')
       @payload = _payload
       @sequence = array[0]
       @type = array[1]
       @from_user = array[2]
       @to_user = array[3]
-      #@event = _event_hash
+      @event = _event_hash
       @clients = _clients
-      @user = User.new(@event[:to_user]) if !@to_user.nil?
+      #binding.pry
+      #@user = User.new(@to_user) if !@to_user.nil?
     end
 
     def self.parsed_event(_payload)
@@ -31,41 +32,54 @@ module FollowerMaze
 # * **Status Update**: All current followers of the `From User ID` should be notified
 
     def process
-      binding.pry
       case @type
       when 'F'
+        @user = User.new(@to_user) if !@to_user.nil?
         if @user
+          binding.pry
           @user.add_follower(@from_user)
           puts "User #{@from_user} follows user #{@user.id}"
           binding.pry
-          @clients[@user_id.to_s].write('hi')
+          @clients[@user.id.to_s].write(@payload)
+        else
+          puts "no user"
         end
       when 'U'
+        @user = User.new(@to_user) if !@to_user.nil?
         if @user
+          #binding.pry
           puts "User #{@from_user} unfollows user #{@user.id}"
-          binding.pry
+          #binding.pry
           @user.remove_follower(@from_user)
+        else
+          puts "no user"
         end
       when 'B'
         puts "Broadcasting"
-        binding.pry
+        #binding.pry
         @clients.each do |client_id, client|
-          client.write("hi")
+          client.write(@payload)
         end
       when 'S'
+        @user = User.new(@from_user) if !@from_user.nil?
         if @user
-          puts "Status Update for followers of user #{@user.id}"
-          binding.pry
-          @user.followers.each do |f|
-            @client["#{f}"].write("hi")
+          #binding.pry
+          if @user.followers.any?
+            puts "Status Update for followers of user #{@user.id}"
+            @user.followers.each do |f|
+              @client["#{f}"].write(@payload)
+            end
+          else
+            ""
           end
+        else
+          ""
         end
       when 'P'
-        if @user
-          puts "Private message from user #{@from_user} to user #{@user.id}"
-          binding.pry
-          @clients[@user_id.to_s].write('hi')
-        end
+        #binding.pry
+        puts "Private message from user #{@from_user} to user #{@user.id}"
+        #binding.pry
+        @clients[@user.id.to_s].write(@payload)
       else
         ""
       end

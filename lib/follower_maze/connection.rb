@@ -18,8 +18,14 @@ module FollowerMaze
           #puts "|#{@queue}|"
           #puts " ************** #{@clients}"
           @queue.each do |event_hash|
-            event = FollowerMaze::Event.new(payload, @clients)
-            binding.pry
+            #binding.pry
+            #if !event_hash[:to_user].nil?
+              #binding.pry
+              event = FollowerMaze::Event.new(event_hash, payload, @clients)
+            #else
+              #binding.pry
+              #next
+            #end
             event.process
           end
         end
