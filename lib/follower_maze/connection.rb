@@ -22,10 +22,11 @@ module FollowerMaze
             #binding.pry
             
             #ONLY ADDED THIS FOR DEBUGGING PURPOSES
-            if event_hash[:to_user].nil? && event_hash[:type] == "S"
-              next
+            #if event_hash[:to_user].nil? && event_hash[:type] == "S"
+              #next
               #binding.pry
-            else
+            #else
+              #binding.pry
               event = FollowerMaze::Event.new(event_hash, payload, @clients)
             #else
               #binding.pry
@@ -33,7 +34,7 @@ module FollowerMaze
             #end
             event.process
             
-            end
+            #end
           end
         end
       end
