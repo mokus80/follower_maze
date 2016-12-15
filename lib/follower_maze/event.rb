@@ -33,6 +33,7 @@ module FollowerMaze
     def process
       case @type
       when 'F'
+        binding.pry
         @followers.merge!(@to_user => [@from_user])
         puts "User #{@from_user} follows user #{@to_user}"
         if @clients.keys.include?(@to_user)
@@ -43,6 +44,7 @@ module FollowerMaze
         @followers[@to_user].delete(@from_user)
         puts "User #{@from_user} unfollows user #{@to_user}"
       when 'B'
+        binding.pry
         puts "Broadcasting"
         @clients.each do |client_id, client|
           client.write(@payload)
@@ -51,11 +53,12 @@ module FollowerMaze
         puts "Status Update for followers of user #{@from_user}"
         #TO DO: add logic!
         binding.pry
-        matches = @followers[@from_user] & @clients.keys 
+        matches = @followers[@from_user].to_a & @clients.keys 
         if matches.any?
           matches.each do |match|
             @clients[match].write(@payload)
           end
+          puts 'no active clients'
         end
       when 'P'
         binding.pry

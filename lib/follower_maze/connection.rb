@@ -33,7 +33,7 @@ module FollowerMaze
               #binding.pry
             
             #end
-            #binding.pry
+            binding.pry
             event.process
             
             #end
