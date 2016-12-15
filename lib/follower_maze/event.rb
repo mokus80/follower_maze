@@ -3,7 +3,7 @@ module FollowerMaze
 
     attr_reader :payload, :sequence, :type, :from_user, :to_user
 
-    def initialize(_event_hash, _payload, _clients)
+    def initialize(_event_hash, _payload, _clients, _followers)
       array = _payload.chomp.split('|')
       @payload = _payload
       @sequence = array[0].to_s
@@ -12,7 +12,7 @@ module FollowerMaze
       @to_user = array[3].to_s
       @event = _event_hash
       @clients = _clients
-      @followers = {}
+      @followers = _followers 
     end
 
     def self.parsed_event(_payload)
@@ -33,11 +33,14 @@ module FollowerMaze
     def process
       case @type
       when 'F'
-        @followers.merge!(@from_user => @to_user)
+        @followers.merge!(@to_user => [@from_user])
         puts "User #{@from_user} follows user #{@to_user}"
-        @clients[@to_user.to_s].write(@payload)
+        if @clients.keys.include?(@to_user)
+          @clients[@to_user].write(@payload)
+        end
       when 'U'
-        @followers.delete_if { |k,v| k == @from_user && v == @to_user}
+        binding.pry
+        @followers[@to_user].delete(@from_user)
         puts "User #{@from_user} unfollows user #{@to_user}"
       when 'B'
         puts "Broadcasting"
@@ -47,12 +50,17 @@ module FollowerMaze
       when 'S'
         puts "Status Update for followers of user #{@from_user}"
         #TO DO: add logic!
-        # followers[@from_user].each do |f|
-        #   @client["#{f}"].write(@payload)
-        # end
+        binding.pry
+        matches = @followers[@from_user] & @clients.keys 
+        if matches.any?
+          matches.each do |match|
+            @clients[match].write(@payload)
+          end
+        end
       when 'P'
+        binding.pry
         puts "Private message from user #{@from_user} to user #{@user.id}"
-        @clients[@to_user].write(@payload)
+        @clients[@from_user].write(@payload)
       else
         ""
       end

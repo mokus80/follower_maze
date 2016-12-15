@@ -6,6 +6,7 @@ module FollowerMaze
       @client_server = _client_server
       @event_queue = FollowerMaze::EventQueue.new()
       @clients = {}
+      @followers = {}
     end
 
     def run
@@ -27,11 +28,12 @@ module FollowerMaze
               #binding.pry
             #else
               #binding.pry
-              event = FollowerMaze::Event.new(event_hash, payload, @clients)
+            event = FollowerMaze::Event.new(event_hash, payload, @clients, @followers)
             #else
               #binding.pry
             
             #end
+            #binding.pry
             event.process
             
             #end

@@ -1,9 +1,8 @@
 require 'socket'
 require 'thread'
 require 'pry'
-require 'logger'
+require 'rspec'
 require './lib/follower_maze/event_queue'
-require './lib/follower_maze/user'
 require './lib/follower_maze/event'
 require './lib/follower_maze/connection'
 
