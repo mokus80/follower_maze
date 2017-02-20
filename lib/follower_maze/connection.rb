@@ -28,13 +28,20 @@ module FollowerMaze
               #binding.pry
             #else
               #binding.pry
-            event = FollowerMaze::Event.new(event_hash, payload, @clients, @followers)
+            #binding.pry
+          
+            test = FollowerMaze::Event.new(event_hash, payload, @clients, @followers)
+            test.process
+      
+            #binding.pry
+            #event.test
+
             #else
               #binding.pry
             
             #end
-            binding.pry
-            event.process
+
+            #event.process
             
             #end
           end

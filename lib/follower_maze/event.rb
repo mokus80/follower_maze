@@ -20,9 +20,9 @@ module FollowerMaze
       { sequence: array[0], type: array[1], from_user: array[2], to_user: array[3] }
     end
 
-    def to_hash
-      { sequence: self.sequence, type: self.type, from_user: self.from_user, to_user: self.to_user }
-    end
+    # def to_hash
+    #   { sequence: self.sequence, type: self.type, from_user: self.from_user, to_user: self.to_user }
+    # end
 
 # * **Follow**: Only the `To User Id` should be notified
 # * **Unfollow**: No clients should be notified
@@ -30,21 +30,26 @@ module FollowerMaze
 # * **Private Message**: Only the `To User Id` should be notified
 # * **Status Update**: All current followers of the `From User ID` should be notified
 
+    def test
+      puts @from_user
+    end
+
+
     def process
       case @type
       when 'F'
-        binding.pry
+        #binding.pry
         @followers.merge!(@to_user => [@from_user])
         puts "User #{@from_user} follows user #{@to_user}"
         if @clients.keys.include?(@to_user)
           @clients[@to_user].write(@payload)
         end
       when 'U'
-        binding.pry
+        #binding.pry
         @followers[@to_user].delete(@from_user)
         puts "User #{@from_user} unfollows user #{@to_user}"
       when 'B'
-        binding.pry
+        #binding.pry
         puts "Broadcasting"
         @clients.each do |client_id, client|
           client.write(@payload)
@@ -52,7 +57,7 @@ module FollowerMaze
       when 'S'
         puts "Status Update for followers of user #{@from_user}"
         #TO DO: add logic!
-        binding.pry
+        #binding.pry
         matches = @followers[@from_user].to_a & @clients.keys 
         if matches.any?
           matches.each do |match|
@@ -61,9 +66,9 @@ module FollowerMaze
           puts 'no active clients'
         end
       when 'P'
-        binding.pry
+        #binding.pry
         puts "Private message from user #{@from_user} to user #{@user.id}"
-        @clients[@from_user].write(@payload)
+        @clients[@to_user].write(@payload)
       else
         ""
       end
